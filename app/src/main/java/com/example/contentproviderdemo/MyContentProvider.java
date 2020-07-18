@@ -8,6 +8,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
 public class MyContentProvider extends ContentProvider {
@@ -95,8 +96,15 @@ public class MyContentProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
-        // TODO: Implement this to handle query requests from clients.
-        throw new UnsupportedOperationException("Not yet implemented");
+
+        SQLiteQueryBuilder myQuery = new SQLiteQueryBuilder();
+        myQuery.setTables(DB_TABLE);
+
+        Cursor cr = myQuery.query(myDb, null,null,null,null,null,"_id");
+
+        cr.setNotificationUri(getContext().getContentResolver(), uri);
+
+        return cr;
     }
 
     @Override
