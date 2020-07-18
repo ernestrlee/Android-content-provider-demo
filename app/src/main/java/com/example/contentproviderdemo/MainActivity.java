@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void saveContent(View view) {
-        values.put("emp name", e1.getText().toString());
+        values.put("emp_name", e1.getText().toString());
         values.put("profile", e2.getText().toString());
 
         Uri uri = getContentResolver().insert(MyContentProvider.CONTENT_URI, values);
@@ -34,15 +34,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadContent(View view) {
         Cursor cr = getContentResolver().query(MyContentProvider.CONTENT_URI, null, null, null, "_id");
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 
         while(cr.moveToNext()){
             int id = cr.getInt(0);
             String s1 = cr.getString(1);
             String s2 = cr.getString(2);
-            stringBuilder.append(id + " " + s1 + " " + s2 + "\n");
+            sb.append(id);
+            sb.append(":   ");
+            sb.append(s1);
+            sb.append("   ");
+            sb.append(s2);
+            sb.append("\n");
         }
 
-        Toast.makeText(this, stringBuilder.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, sb.toString(), Toast.LENGTH_SHORT).show();
     }
 }
