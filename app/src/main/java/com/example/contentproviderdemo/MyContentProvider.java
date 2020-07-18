@@ -10,6 +10,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 
 public class MyContentProvider extends ContentProvider {
+
+    SQLiteDatabase myDb;
+
     public MyContentProvider() {
     }
 
@@ -67,8 +70,16 @@ public class MyContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        // TODO: Implement this to initialize your content provider on startup.
-        return false;
+        MyDatabase myHelper = new MyDatabase(getContext());
+
+        myDb = myHelper.getWritableDatabase();
+
+        if(myDb != null){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     @Override
