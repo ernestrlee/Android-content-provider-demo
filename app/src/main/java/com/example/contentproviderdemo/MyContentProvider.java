@@ -3,6 +3,7 @@ package com.example.contentproviderdemo;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -14,6 +15,15 @@ public class MyContentProvider extends ContentProvider {
 
     public static final String AUTHORITY = "com.example.content.provider";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
+
+    static int EMP = 1;
+    static int EMP_ID = 2;
+
+    static UriMatcher myUri = new UriMatcher(UriMatcher.NO_MATCH);
+    static {
+        myUri.addURI(AUTHORITY, "emp", EMP);
+        myUri.addURI(AUTHORITY, "emp/#", EMP_ID);
+    }
 
     private class MyDatabase extends SQLiteOpenHelper {
         private static final String DB_NAME = "company";
