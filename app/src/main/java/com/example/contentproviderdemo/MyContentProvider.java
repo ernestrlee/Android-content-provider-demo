@@ -1,6 +1,7 @@
 package com.example.contentproviderdemo;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
@@ -13,11 +14,15 @@ public class MyContentProvider extends ContentProvider {
 
     SQLiteDatabase myDb;
 
+    private static final String DB_NAME = "company";
+    private static final String DB_TABLE = "emp";
+    private static final int DB_VER = 1;
+
     public MyContentProvider() {
     }
 
     public static final String AUTHORITY = "com.example.content.provider";
-    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
+    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + DB_TABLE);
 
     static int EMP = 1;
     static int EMP_ID = 2;
@@ -29,9 +34,7 @@ public class MyContentProvider extends ContentProvider {
     }
 
     private class MyDatabase extends SQLiteOpenHelper {
-        private static final String DB_NAME = "company";
-        private static final String DB_TABLE = "emp";
-        private static final int DB_VER = 1;
+
 
         public MyDatabase(Context ct){
             super(ct, DB_NAME, null, DB_VER);
@@ -64,8 +67,15 @@ public class MyContentProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        // TODO: Implement this to handle requests to insert a new row.
-        throw new UnsupportedOperationException("Not yet implemented");
+
+        long row = myDb.insert(DB_TABLE, null, values);
+
+        if(row > 0){
+            uri = ContentUris.withAppendedId(CONTENT_URI, row);
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return uri;
     }
 
     @Override
