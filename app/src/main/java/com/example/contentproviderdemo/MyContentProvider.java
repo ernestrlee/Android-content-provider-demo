@@ -36,7 +36,6 @@ public class MyContentProvider extends ContentProvider {
 
     private class MyDatabase extends SQLiteOpenHelper {
 
-
         public MyDatabase(Context ct){
             super(ct, DB_NAME, null, DB_VER);
         }
@@ -44,7 +43,6 @@ public class MyContentProvider extends ContentProvider {
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL("create table " + DB_TABLE + " (_id integer primary key autoincrement, emp_name text, profile text);");
-
         }
 
         @Override
